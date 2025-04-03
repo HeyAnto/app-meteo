@@ -7,6 +7,9 @@
   /* Primary Color */
   --color-dark: #000000;
   --color-white: #ffffff;
+  --color-bg-sky: #f5f9ff;
+  --color-light-blue: #5e9fff;
+  --color-blue: #0067ff;
 
   /* Font Family */
   --font-family: "BDO Grotesk", "Arial", sans-serif;
@@ -31,6 +34,22 @@ p {
 }
 
 /* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-p);
+  font-weight: var(--font-weight-regular);
+
+  transition: all 0.3s;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;
@@ -42,3 +61,74 @@ button {
 }
 
 /* Styles */
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+
+  background: var(--color-bg-sky);
+}
+
+main {
+  width: 100%;
+  max-width: 500px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+}
+
+section {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+form {
+  display: flex;
+  gap: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+
+  color: var(--color-light-blue);
+  background-color: var(--color-bg-sky);
+  border: 1px solid var(--color-light-blue);
+  border-radius: 6px;
+}
+
+input::placeholder {
+  color: var(--color-light-blue);
+  opacity: 0.5;
+}
+
+input:hover {
+  border: 1px solid var(--color-blue);
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid var(--color-blue);
+}
+
+button {
+  padding: 12px;
+
+  color: var(--color-white);
+  background: var(--color-light-blue);
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--color-blue);
+}
