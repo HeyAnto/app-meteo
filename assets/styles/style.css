@@ -7,15 +7,18 @@
   /* Primary Color */
   --color-dark: #000000;
   --color-white: #ffffff;
-  --color-bg-sky: #f5f9ff;
-  --color-light-blue: #5e9fff;
-  --color-blue: #0067ff;
+  --color-bg-sky: #fbfcff;
+  --color-blue: #0066ff;
 
   /* Font Family */
   --font-family: "BDO Grotesk", "Arial", sans-serif;
 
   /* Font Size */
+  --font-size-display1: 3rem;
+
   --font-size-p: 1rem;
+  --font-size-h1: 1.5rem;
+  --font-size-h2: 1.5rem;
 
   /* Font Weight */
   --font-weight-regular: 400;
@@ -23,11 +26,26 @@
 }
 
 ::selection {
-  color: var(--color-white);
-  background: var(--color-dark);
+  color: var(--color-hover-blue);
+  background: var(--color-blue);
 }
 
 /* Font Style */
+.display1 {
+  font-size: var(--font-size-display1);
+  font-weight: var(--font-weight-bold);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+}
+
 p {
   font-size: var(--font-size-p);
   font-weight: var(--font-weight-regular);
@@ -82,6 +100,17 @@ main {
   gap: 100px;
 }
 
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  height: 60px;
+}
+
 section {
   width: 100%;
 
@@ -99,36 +128,69 @@ input {
   width: 100%;
   padding: 12px;
 
-  color: var(--color-light-blue);
+  color: var(--color-blue);
   background-color: var(--color-bg-sky);
-  border: 1px solid var(--color-light-blue);
+  border: 1px solid var(--color-blue);
   border-radius: 6px;
+  opacity: 0.8;
 }
 
 input::placeholder {
-  color: var(--color-light-blue);
-  opacity: 0.5;
+  color: var(--color-blue);
 }
 
 input:hover {
-  border: 1px solid var(--color-blue);
+  opacity: 1;
 }
 
 input:focus {
   outline: none;
-  border: 1px solid var(--color-blue);
+  opacity: 1;
 }
 
 button {
   padding: 12px;
 
-  color: var(--color-white);
-  background: var(--color-light-blue);
+  color: var(--color-bg-sky);
+  background: var(--color-blue);
   border-radius: 6px;
 
   cursor: pointer;
 }
 
 button:hover {
+  opacity: 0.8;
+}
+
+.card-1 {
+  width: 100%;
+
+  display: flex;
+  padding: 12px;
+  gap: 30px;
+
+  width: 100%;
+
+  color: var(--color-bg-sky);
   background: var(--color-blue);
+  border-radius: 6px;
+}
+
+.card-1-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.card-1-img {
+  overflow: hidden;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-1-img img {
+  height: 100px;
 }
