@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "BDO Grotesk";
+  src: url(../font/BDOGrotesk-VF.ttf) format("truetype");
+}
+
+:root {
+  /* Primary Color */
+  --color-dark: #000000;
+  --color-white: #ffffff;
+
+  /* Font Family */
+  --font-family: "BDO Grotesk", "Arial", sans-serif;
+
+  /* Font Size */
+  --font-size-p: 1rem;
+
+  /* Font Weight */
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+}
+
+::selection {
+  color: var(--color-white);
+  background: var(--color-dark);
+}
+
+/* Font Style */
+p {
+  font-size: var(--font-size-p);
+  font-weight: var(--font-weight-regular);
+}
+
+/* Reset */
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+/* Styles */
