@@ -1,12 +1,67 @@
 let cityInput = document.getElementById("city_input"),
   searchBtn = document.getElementById("searchBtn"),
-  api_key = "2d488b96c88b4c86da35df706f12bb93";
+  api_key = "6529bbf8a404d9dc7494e5331f646f82",
+  currentWeatherCard = document.querySelectorAll(".weather-left .card")[0];
 
+function getWeatherDetails(name, lat, lon, country, state) {
+  let FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${api_key},`;
+  let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`;
+  (days = [
+    `Sunday`,
+    `Monday`,
+    `Thuesday`,
+    `Wednesday`,
+    `Thursday`,
+    `Friday`,
+    `Saturday`,
+  ]),
+    (months = [
+      `Jan`,
+      `Feb`,
+      `Mar`,
+      `Apr`,
+      `May`,
+      `Jun`,
+      `Jul`,
+      `Aug`,
+      `Oct`,
+      `Sep`,
+      `Nov`,
+      `Dec`,
+    ]);
+
+  fetch(WEATHER_API_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      let date = new Date();
+      currentWeatherCard.innerHTML = `
+        <div class="current-weather">
+                <div class="details">
+                    <p>Now</p>
+                    <h2>___&deg;C</h2>
+                    <p>_____</p>
+                </div>
+                <div class="weather-icon">
+                    img src="https://openweathermap.org/img/wn/04d@2x.png"
+                    alt="">
+                </div>
+        </div>
+        <hr>
+        <div class="card-footer">
+            <p><i class="fa-light fa-calendar"></i>_____</p>
+            <p><i class="fa-light fa-location-dot"></i>____</p>
+        </div>`;
+    })
+    .catch(() => {
+      alert(`Failed to fetch curent weather`);
+    });
+}
 function getCityCoordinates() {
   let cityName = cityInput.value.trim();
   cityInput.value = "";
   if (!cityName) return;
-  let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
+  let GEOCODING_API_URL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
+  console.log(GEOCODING_API_URL);
   fetch(GEOCODING_API_URL)
     .then((res) => res.json())
     .then((data) => {
