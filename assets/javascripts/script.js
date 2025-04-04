@@ -4,7 +4,9 @@ let cityInput = document.getElementById("city_input"),
   searchBtn = document.getElementById("searchBtn"),
   api_key = "6529bbf8a404d9dc7494e5331f646f82",
   cardTitle = document.querySelector(".card-title"),
-  cardWeather = document.querySelector(".card-weather");
+  cardWeather = document.querySelector(".card-weather"),
+  cardHumidity = document.querySelector(".card-humidity");
+cardWind = document.querySelector(".card-wind");
 
 function getWeatherDetails(name, lat, lon, country, state) {
   let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${api_key}&lang=fr`;
@@ -36,11 +38,14 @@ function getWeatherDetails(name, lat, lon, country, state) {
   fetch(WEATHER_API_URL)
     .then((res) => res.json())
     .then((data) => {
+      console.log(data);
       let date = new Date();
       let jourSemaine = jours[date.getDay()];
       let jour = date.getDate();
       let moisAnnee = mois[date.getMonth()];
       let temperature = Math.round(data.main.temp);
+      let wind = data.wind.speed;
+      let humidity = data.main.humidity;
       let description = data.weather[0].description;
       let icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
       let weatherMain = data.weather[0].main.toLowerCase();
@@ -75,6 +80,34 @@ function getWeatherDetails(name, lat, lon, country, state) {
         <div class="card-weather-img">
           <img src="${icon}" alt="Météo" />
         </div>
+      `;
+
+      cardWind.innerHTML = `
+        <div class="card card-wind">
+            <img
+              class="icon"
+              src="assets/icons/icon-wind.svg"
+              alt="Icone Wind"
+            />
+            <div class="card-mini-content">
+              <h2 class="display1">${wind}</h2>
+              <p>Wind m/s</p>
+            </div>
+          </div>
+      `;
+
+      cardHumidity.innerHTML = `
+      <div class="card card-humidity">
+            <img
+              class="icon"
+              src="assets/icons/icon-humidity.svg"
+              alt="Icone Humidity"
+            />
+            <div class="card-mini-content">
+              <h2 class="display1">${humidity}%</h2>
+              <p>Humidity</p>
+           </div>
+          </div>
       `;
     })
     .catch(() => {
