@@ -1,17 +1,20 @@
-// Déclaration des variables et récupération des éléments principaux (class, id, api)
-let cityInput = document.getElementById("city_input"),
-  searchBtn = document.getElementById("searchBtn"),
-  api_key = "6529bbf8a404d9dc7494e5331f646f82",
-  cardTitle = document.querySelector(".card-title"),
-  cardWeather = document.querySelector(".card-weather"),
-  cardHumidity = document.querySelector(".card-humidity");
-cardWind = document.querySelector(".card-wind");
+// === Déclaration des variables principales ===
+let cityInput = document.getElementById("city_input");
+let searchBtn = document.getElementById("searchBtn");
+let api_key = "6529bbf8a404d9dc7494e5331f646f82";
 
-// Declaration des variables pour récuperer les informations de l'API
+// === Sélection des éléments de la carte météo ===
+let cardTitle = document.querySelector(".card-title");
+let cardWeather = document.querySelector(".card-weather");
+let cardHumidity = document.querySelector(".card-humidity");
+let cardWind = document.querySelector(".card-wind");
+
+// === Fonction pour récupérer les détails météo en fonction des coordonnées ===
 function getWeatherDetails(name, lat, lon, country, state) {
-  // Preparation de la requete meteo
+  // URL de l'API météo
   let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${api_key}&lang=fr`;
 
+  // Tableaux pour convertir les dates en français
   let jours = [
     "Dimanche",
     "Lundi",
@@ -36,22 +39,24 @@ function getWeatherDetails(name, lat, lon, country, state) {
     "Décembre",
   ];
 
-  // Envoi de la requête api puis transformation multiple jusqu'a obtenir un format js exploitable
+  // Appel API météo
   fetch(WEATHER_API_URL)
     .then((res) => res.json())
     .then((data) => {
-      // Insertion des infos de la reponse dans des variables pour une meilleur visiblité dans la card
+      // Récupération des infos météo
       let date = new Date();
       let jourSemaine = jours[date.getDay()];
       let jour = date.getDate();
       let moisAnnee = mois[date.getMonth()];
+
       let temperature = Math.round(data.main.temp);
       let wind = data.wind.speed;
       let humidity = data.main.humidity;
       let description = data.weather[0].description;
       let icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-      let weatherMain = data.weather[0].main.toLowerCase();
-      // Changement du fond de la card selon la méteo
+      let weatherMain = data.weather[0].main.toLowerCase(); // Ex: 'clear', 'clouds', 'rain'
+
+      // Choix du fond d'écran selon la météo
       let weatherBackgrounds = {
         clear: "url('assets/images/clear.webp')",
         clouds: "url('assets/images/cloudy.webp')",
@@ -61,17 +66,24 @@ function getWeatherDetails(name, lat, lon, country, state) {
         mist: "url('assets/images/mist.webp')",
         haze: "url('assets/images/haze.webp')",
       };
+
+      // Si la météo n’est pas reconnue, on utilise un fond par défaut
       let backgroundImage =
         weatherBackgrounds[weatherMain] || "url('assets/images/clear.webp')";
 
+      // Mise à jour du fond de la card
       cardTitle.style.backgroundImage = backgroundImage;
-      // Affichage des infos récuperer dans la card grace au variable défini
+
+      // === Mise à jour des éléments de la card ===
+
+      // Titre (ville + pays + date)
       cardTitle.innerHTML = `
         <h2>${name}</h2>
         <p>${state ? state + ", " : ""}${country}</p>
         <p>${jourSemaine} ${jour} ${moisAnnee}</p>
       `;
 
+      // Température et description
       cardWeather.innerHTML = `
         <div class="card-weather-content">
           <h2 class="display1">${temperature}°C</h2>
@@ -82,47 +94,43 @@ function getWeatherDetails(name, lat, lon, country, state) {
         </div>
       `;
 
+      // Vent
       cardWind.innerHTML = `
         <div class="card card-wind">
-            <img
-              class="icon"
-              src="assets/icons/icon-wind.svg"
-              alt="Icone Wind"
-            />
-            <div class="card-mini-content">
-              <h2 class="display1">${wind}</h2>
-              <p>Wind m/s</p>
-            </div>
+          <img class="icon" src="assets/icons/icon-wind.svg" alt="Icône Vent" />
+          <div class="card-mini-content">
+            <h2 class="display1">${wind}</h2>
+            <p>Vent m/s</p>
           </div>
+        </div>
       `;
 
+      // Humidité
       cardHumidity.innerHTML = `
-      <div class="card card-humidity">
-            <img
-              class="icon"
-              src="assets/icons/icon-humidity.svg"
-              alt="Icone Humidity"
-            />
-            <div class="card-mini-content">
-              <h2 class="display1">${humidity}%</h2>
-              <p>Humidity</p>
-           </div>
+        <div class="card card-humidity">
+          <img class="icon" src="assets/icons/icon-humidity.svg" alt="Icône Humidité" />
+          <div class="card-mini-content">
+            <h2 class="display1">${humidity}%</h2>
+            <p>Humidité</p>
           </div>
+        </div>
       `;
     })
     .catch(() => {
-      alert(`Échec de récupération des données météo`);
+      alert(`Échec de récupération des données météo.`);
     });
 }
 
-// Pour récuperer la longitude et latitude de la recherche selon la ville
+// === Fonction pour récupérer les coordonnées d'une ville via OpenWeather Geo API ===
 function getCityCoordinates() {
-  let cityName = cityInput.value.trim();
-  cityInput.value = "";
-  if (!cityName) return;
+  let cityName = cityInput.value.trim(); // On récupère la valeur de l'input
+  cityInput.value = ""; // Réinitialise l'input
+
+  if (!cityName) return; // Si l'input est vide, on ne fait rien
+
+  // URL de l'API de géocodage
   let GEOCODING_API_URL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
 
-  // Requete api concernant la localisation
   fetch(GEOCODING_API_URL)
     .then((res) => res.json())
     .then((data) => {
@@ -130,7 +138,11 @@ function getCityCoordinates() {
         alert(`Ville introuvable : ${cityName}`);
         return;
       }
+
+      // On récupère les infos utiles de la ville
       let { name, lat, lon, country, state } = data[0];
+
+      // Fonction pour récupérer la météo
       getWeatherDetails(name, lat, lon, country, state);
     })
     .catch(() => {
@@ -138,9 +150,11 @@ function getCityCoordinates() {
     });
 }
 
+// === Lancement de la recherche météo quand on clique sur le bouton ===
 searchBtn.addEventListener("click", getCityCoordinates);
 
-// Affichage par défaut
+// === Affichage par défaut à l'ouverture de la page ===
 document.addEventListener("DOMContentLoaded", function () {
+  // Paris par défaut
   getWeatherDetails("Paris", 48.8566, 2.3522, "France", "Île-de-France");
 });
