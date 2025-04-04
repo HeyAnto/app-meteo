@@ -267,7 +267,7 @@ footer {
 }
 
 /* Media Queries */
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 560px) {
   body {
     padding: 20px;
     gap: 50px;
