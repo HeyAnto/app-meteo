@@ -1,5 +1,4 @@
-// Récuperation des variable du html et la clé api
-
+// Déclaration des variables et récupération des éléments principaux (class, id, api)
 let cityInput = document.getElementById("city_input"),
   searchBtn = document.getElementById("searchBtn"),
   api_key = "6529bbf8a404d9dc7494e5331f646f82",
@@ -8,7 +7,9 @@ let cityInput = document.getElementById("city_input"),
   cardHumidity = document.querySelector(".card-humidity");
 cardWind = document.querySelector(".card-wind");
 
+// Declaration des variables pour récuperer les informations de l'API
 function getWeatherDetails(name, lat, lon, country, state) {
+  // Preparation de la requete meteo
   let WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${api_key}&lang=fr`;
 
   let jours = [
@@ -35,10 +36,11 @@ function getWeatherDetails(name, lat, lon, country, state) {
     "Décembre",
   ];
 
+  // Envoi de la requête api puis transformation multiple jusqu'a obtenir un format js exploitable
   fetch(WEATHER_API_URL)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // Insertion des infos de la reponse dans des variables pour une meilleur visiblité dans la card
       let date = new Date();
       let jourSemaine = jours[date.getDay()];
       let jour = date.getDate();
@@ -49,7 +51,7 @@ function getWeatherDetails(name, lat, lon, country, state) {
       let description = data.weather[0].description;
       let icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
       let weatherMain = data.weather[0].main.toLowerCase();
-
+      // Changement du fond de la card selon la méteo
       let weatherBackgrounds = {
         clear: "url('assets/images/clear.webp')",
         clouds: "url('assets/images/cloudy.webp')",
@@ -63,9 +65,7 @@ function getWeatherDetails(name, lat, lon, country, state) {
         weatherBackgrounds[weatherMain] || "url('assets/images/clear.webp')";
 
       cardTitle.style.backgroundImage = backgroundImage;
-      cardTitle.style.backgroundSize = "cover";
-      cardTitle.style.backgroundPosition = "center";
-
+      // Affichage des infos récuperer dans la card grace au variable défini
       cardTitle.innerHTML = `
         <h2>${name}</h2>
         <p>${state ? state + ", " : ""}${country}</p>
@@ -115,12 +115,14 @@ function getWeatherDetails(name, lat, lon, country, state) {
     });
 }
 
+// Pour récuperer la longitude et latitude de la recherche selon la ville
 function getCityCoordinates() {
   let cityName = cityInput.value.trim();
   cityInput.value = "";
   if (!cityName) return;
   let GEOCODING_API_URL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
 
+  // Requete api concernant la localisation
   fetch(GEOCODING_API_URL)
     .then((res) => res.json())
     .then((data) => {
@@ -138,6 +140,7 @@ function getCityCoordinates() {
 
 searchBtn.addEventListener("click", getCityCoordinates);
 
+// Affichage par défaut
 document.addEventListener("DOMContentLoaded", function () {
   getWeatherDetails("Paris", 48.8566, 2.3522, "France", "Île-de-France");
 });
