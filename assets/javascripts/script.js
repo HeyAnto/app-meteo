@@ -1,7 +1,11 @@
+// Récuperation des variable du html et la clé api
+
 let cityInput = document.getElementById("city_input"),
   searchBtn = document.getElementById("searchBtn"),
   api_key = "6529bbf8a404d9dc7494e5331f646f82",
   currentWeatherCard = document.querySelectorAll(".weather-left .card")[0];
+
+// Recupere des infos sur l'api et ajoute le jour et mois
 
 function getWeatherDetails(name, lat, lon, country, state) {
   let FORECAST_API_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${api_key},`;
@@ -30,6 +34,8 @@ function getWeatherDetails(name, lat, lon, country, state) {
       `Dec`,
     ]);
 
+  // Affichage des infos via une requete dans une card pour les visualiser
+
   fetch(WEATHER_API_URL)
     .then((res) => res.json())
     .then((data) => {
@@ -56,12 +62,18 @@ function getWeatherDetails(name, lat, lon, country, state) {
       alert(`Failed to fetch curent weather`);
     });
 }
+
+// Récuperer la gealocalisation de la ville rensiegner dans la barre de recherche
+
 function getCityCoordinates() {
   let cityName = cityInput.value.trim();
   cityInput.value = "";
   if (!cityName) return;
   let GEOCODING_API_URL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
   console.log(GEOCODING_API_URL);
+
+  // Envoi de la requete à l'api puis converti la reponse en json
+
   fetch(GEOCODING_API_URL)
     .then((res) => res.json())
     .then((data) => {
